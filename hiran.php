@@ -108,6 +108,109 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
+       
+
+
+
+form database.......................................................................................................................................................
+
+<?php
+// 1. Database ??????????? ???? ?????? ???????
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "registration_db"; // ??? ??????? Database ??? ??
+
+// Connection ?? ??????
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Connection ?? ???? ????? ????
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Variables ????? ???? Initialize ?????
+$name = $email = $website = $comment = $gender = "";
+$nameErr = $emailErr = $websiteErr = $genderErr = "";
+
+function test_input($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $isValid = true;
+
+    // --- Validation ??? ????? ???? ?????? ---
+    if (empty($_POST["name"])) { $nameErr = "Name is required"; $isValid = false; } 
+    else { $name = test_input($_POST["name"]); }
+
+    if (empty($_POST["email"])) { $emailErr = "Email is required"; $isValid = false; } 
+    else { $email = test_input($_POST["email"]); }
+
+    $website = test_input($_POST["website"]);
+    $comment = test_input($_POST["comment"]);
+
+    if (empty($_POST["gender"])) { $genderErr = "Gender is required"; $isValid = false; } 
+    else { $gender = test_input($_POST["gender"]); }
+
+    // 2. ???? ??????? ??? ????? Database ??? ????
+    if ($isValid) {
+        // SQL query ?? ?????
+        $sql = "INSERT INTO users (name, email, website, comment, gender) 
+                VALUES ('$name', '$email', '$website', '$comment', '$gender')";
+
+        if ($conn->query($sql) === TRUE) {
+            echo "<script>alert('Data saved to Database successfully!');</script>";
+        } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
+    }
+}
+$conn->close(); // Connection ?? ?????
+?>
+
+<!DOCTYPE html>
+<html>
+<body>
+    <h2>Registration Form with Database</h2>
+    <form method="post" action="">
+        Name: <input type="text" name="name" value="<?php echo $name; ?>"> * <?php echo $nameErr; ?><br><br>
+        Email: <input type="text" name="email" value="<?php echo $email; ?>"> * <?php echo $emailErr; ?><br><br>
+        Website: <input type="text" name="website" value="<?php echo $website; ?>"><br><br>
+        Comment: <textarea name="comment"><?php echo $comment; ?></textarea><br><br>
+        Gender:
+        <input type="radio" name="gender" value="female">Female
+        <input type="radio" name="gender" value="male">Male
+        <input type="radio" name="gender" value="other">Other * <?php echo $genderErr; ?><br><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
+
+
+
+
+-- 1. Database එක සාදා ගැනීම
+CREATE DATABASE registration_db;
+
+-- 2. සාදා ගත් Database එක තෝරා ගැනීම
+USE registration_db;
+
+-- 3. Table එක සාදා ගැනීම (ප්‍රශ්න පත්‍රයේ image_feb97e.png අනුව)
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    website VARCHAR(100),
+    comment TEXT,
+    gender VARCHAR(10) NOT NULL
+);
+
+
+
 
 
 
