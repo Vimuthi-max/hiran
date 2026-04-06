@@ -114,13 +114,13 @@ public class example2{
 
 // 1. Customer Class
 class Customer {
-    private final int customerid; // final නිසා read-only වෙනවා
+    private final int customerid; // final nisa read-only wenawa
     private String name;
     private String address;
 
     Customer(int customerid, String name, String address) {
         this.customerid = customerid;
-        setName(name); // parameter එක pass කරන්න ඕනේ
+        setName(name); // parameter eka pass karanna one
         this.address = address;
     }
 
@@ -213,10 +213,10 @@ class WaterAccount extends UtilityAccount {
 // 5. Main Class
 public class example2 {
     public static void main(String[] args) {
-        // Customer කෙනෙක් හදමු
+        // Customer kenek hadamu
         Customer c1 = new Customer(101, "Amal", "Galle");
 
-        // Polymorphism පාවිච්චි කරලා Array එකක් හදමු
+        // Polymorphism use karala array ekak hadamu
         UtilityAccount[] accounts = new UtilityAccount[2];
         
         accounts[0] = new ElectricityAccount(c1, 350);
