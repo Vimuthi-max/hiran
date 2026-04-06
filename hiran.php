@@ -99,3 +99,132 @@ public class example2{
 		}
 	}
 }
+
+
+
+
+
+						 .............................................................................................................................
+		Bill System			
+
+
+
+
+						 import java.util.Scanner;
+
+// 1. Customer Class
+class Customer {
+    private final int customerid; // final නිසා read-only වෙනවා
+    private String name;
+    private String address;
+
+    Customer(int customerid, String name, String address) {
+        this.customerid = customerid;
+        setName(name); // parameter එක pass කරන්න ඕනේ
+        this.address = address;
+    }
+
+    public void setName(String name) {
+        if (name == null || name.isEmpty()) { // spelling: isEmpty
+            System.out.println("Name can't be empty");
+            this.name = "Unknown";
+        } else {
+            this.name = name;
+        }
+    }
+
+    public int getCustomerid() { return customerid; }
+    public String getName() { return name; }
+    public String getAddress() { return address; }
+}
+
+// 2. Abstract Class
+abstract class UtilityAccount {
+    Customer customer; 
+    double units;
+    double bill;
+
+    UtilityAccount(Customer customer, double units) {
+        this.customer = customer;
+        setUnits(units);
+    }
+
+    public void setUnits(double units) {
+        if (units < 0) {
+            System.out.println("Use positive units number");
+            this.units = 0;
+        } else {
+            this.units = units;
+        }
+    }
+
+    abstract void calculateBill();
+    abstract void generateBill();
+}
+
+// 3. Electricity Account
+class ElectricityAccount extends UtilityAccount {
+    ElectricityAccount(Customer customer, double units) {
+        super(customer, units);
+    }
+
+    @Override
+    void calculateBill() {
+        bill = units * 6;
+        if (units > 300) {
+            bill = bill + (bill * 0.1);
+        }
+    }
+
+    @Override
+    void generateBill() {
+        System.out.println("--- Electricity Bill ---");
+        System.out.println("User: " + customer.getName());
+        System.out.println("Units: " + units);
+        System.out.println("Amount: $" + bill);
+        System.out.println("------------------------");
+    }
+}
+
+// 4. Water Account
+class WaterAccount extends UtilityAccount {
+    WaterAccount(Customer customer, double units) {
+        super(customer, units);
+    }
+
+    @Override
+    void calculateBill() {
+        bill = units * 2;
+        if (units > 500) {
+            bill = bill + 150; // $150 fixed charge
+        }
+    }
+
+    @Override
+    void generateBill() {
+        System.out.println("--- Water Bill ---");
+        System.out.println("User: " + customer.getName());
+        System.out.println("Units: " + units);
+        System.out.println("Amount: $" + bill);
+        System.out.println("------------------------");
+    }
+}
+
+// 5. Main Class
+public class example2 {
+    public static void main(String[] args) {
+        // Customer කෙනෙක් හදමු
+        Customer c1 = new Customer(101, "Amal", "Galle");
+
+        // Polymorphism පාවිච්චි කරලා Array එකක් හදමු
+        UtilityAccount[] accounts = new UtilityAccount[2];
+        
+        accounts[0] = new ElectricityAccount(c1, 350);
+        accounts[1] = new WaterAccount(c1, 600);
+
+        for (UtilityAccount acc : accounts) {
+            acc.calculateBill();
+            acc.generateBill();
+        }
+    }
+}
