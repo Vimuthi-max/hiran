@@ -228,3 +228,79 @@ public class example2 {
         }
     }
 }
+
+
+
+
+.............................................................................................................................
+seat reservation system
+
+
+
+
+
+
+
+
+
+
+
+import java.util.Scanner;
+
+public class SeatReservationSystem {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        // Define 5 rows and 8 columns
+        String[][] seats = new String[5][8];
+        int count = 1;
+
+        // Fill seat numbers from 1 to 40
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 8; j++) {
+                seats[i][j] = String.valueOf(count++);
+            }
+        }
+
+        // Continuous loop for reservation
+        while (true) {
+            // Display current Seat Plan
+            System.out.println("\n--- Seat Plan ---");
+            for (int i = 0; i < 5; i++) {
+                for (int j = 0; j < 8; j++) {
+                    System.out.print(seats[i][j] + "\t");
+                }
+                System.out.println();
+            }
+
+            System.out.print("\nEnter seat number to reserve: ");
+            String input = sc.next();
+
+            try {
+                int seatNum = Integer.parseInt(input);
+
+                // Check if seat number is within valid range (1-40)
+                if (seatNum >= 1 && seatNum <= 40) {
+                    // Logic to find Row and Column based on seat number
+                    int r = (seatNum - 1) / 8;
+                    int c = (seatNum - 1) % 8;
+
+                    // If seat is already "X", show "Ok"
+                    if (seats[r][c].equals("X")) {
+                        System.out.println("Ok");
+                    } else {
+                        // Else, reserve it by replacing with "X"
+                        seats[r][c] = "X";
+                        System.out.println("Seat successfully reserved");
+                    }
+                } else {
+                    // Out of 1-40 range
+                    System.out.println("Error: Invalid seat number! (1-40 only)");
+                }
+            } catch (Exception e) {
+                // If user enters a letter instead of a number
+                System.out.println("Error: Please enter a valid numeric seat number!");
+            }
+        }
+    }
+}
